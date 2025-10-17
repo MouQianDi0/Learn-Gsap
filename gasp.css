@@ -1,14 +1,14 @@
+@font-face {
+    font-family: "Maple Mono";
+    src: url(MapleMono-NF-CN-LightItalic_1.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     color: #fff;
-    font-family: "Maple Mono NF Cn Light";
-}
-
-@font-face {
-    font-family: "Maple Mono NF Cn Light";
-    src: url(MapleMono-NF-CN-LightItalic_1.ttf);
+    font-family: "Maple Mono";
 }
 
 body{
@@ -157,6 +157,7 @@ body{
   border-left: none;
   border-top: none;
 }
+
 
 
 
