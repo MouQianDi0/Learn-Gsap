@@ -6,6 +6,11 @@
     font-family: "Maple Mono NF Cn Light";
 }
 
+@font-face {
+    font-family: "Maple Mono NF Cn Light";
+    src: url(/Font/MapleMono-NF-CN-LightItalic_1.ttf);
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -152,4 +157,5 @@ body{
   border-left: none;
   border-top: none;
 }
+
 
