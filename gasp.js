@@ -182,92 +182,91 @@ document.querySelectorAll(".control").forEach((btn, index) => {
 
 gsap.set(".mouse", {xPercent: -50, yPercent: -50});
 
-let xTo = gsap.quickTo(".mouse", "x", {duration: 0.6, ease: "power3"}),
-    yTo = gsap.quickTo(".mouse", "y", {duration: 0.6, ease: "power3"});
+const mouse = document.querySelector(".mouse");
+const btns = document.querySelectorAll('button');
 
+let xTo = gsap.quickTo(".mouse", "x", {duration: 0.6, ease: "power3"});
+let yTo = gsap.quickTo(".mouse", "y", {duration: 0.6, ease: "power3"});
+
+const original = {
+  width: mouse.offsetWidth,
+  height: mouse.offsetHeight,
+  borderRadius: getComputedStyle(mouse).borderRadius
+};
+
+// 鼠标跟随全局
 window.addEventListener("mousemove", e => {
-  xTo(e.clientX);
-  yTo(e.clientY);
+  const isHovering = [...btns].some(btn => btn.matches(":hover"));
+  if (!isHovering) {
+    xTo(e.clientX);
+    yTo(e.clientY);
+  }
 });
 
-
-
-const btns = document.querySelectorAll('button')
+// 按钮吸附效果
 btns.forEach(btn => {
-    const styles = getComputedStyle(btn);
-    const width = parseFloat(styles.width) //parseFloat()把字符串转成数值
-    const height = parseFloat(styles.height)
-    const mouse = document.querySelector(".mouse")
 
+  btn.addEventListener("mouseenter", () => {
+    const rect = btn.getBoundingClientRect();
+    const btnX = rect.left + rect.width / 2;
+    const btnY = rect.top + rect.height / 2;
 
-    const original = {
-        width: mouse.offsetWidth,
-        height: mouse.offsetHeight,
-        borderRadius: getComputedStyle(mouse).borderRadius
-    };
+    gsap.to(mouse, {
+      duration: 0.5,
+      width: rect.width + 10,
+      height: rect.height + 10,
+      borderRadius: 30,
+      ease: "back.out(5)",
+      overwrite: "auto"
+    });
 
-    // console.log(width)
-    // console.log(height)
+    xTo(btnX);
+    yTo(btnY);
+  });
 
-        btn.addEventListener("mouseenter", () => {
+  btn.addEventListener("mouseleave", () => {
+    gsap.to(mouse, {
+      duration: 0.5,
+      width: original.width,
+      height: original.height,
+      borderRadius: original.borderRadius,
+      ease: "back.out(3)",
+      overwrite: "auto"
+    });
+  });
+
+  btn.addEventListener("click", () => {
+    gsap.to(mouse, {
+      duration: 0.3,
+      width: original.width,
+      height: original.height,
+      borderRadius: original.borderRadius,
+      ease: "back.out(3)",
+      overwrite: "auto"
+    });
+
+    setTimeout(() => {
+        const isHovering = btn.matches(":hover");
+        if (!isHovering) {
             gsap.to(".mouse", {
                 duration: 1,
+                width: original.width,
+                height: original.height,
+                borderRadius: original.borderRadius,
                 ease: "back.out(5)",
-                height: `${height + 10}`,
-                width:  `${width + 10}`,
+                overwrite: "auto"
+            });
+        } else {
+            const rect = btn.getBoundingClientRect();
+            gsap.to(".mouse", {
+                duration: 1,
+                height: rect.height + 10,
+                width:  rect.width + 10,
                 borderRadius: 30,
-                overwrite: "auto"// 防止动画冲突
-            })
-        })
-
-        btn.addEventListener("mouseleave", () => {
-            gsap.to(".mouse", {
-                duration: 1,
-                width: original.width,
-                height: original.height,
-                borderRadius: original.borderRadius,
                 ease: "back.out(5)",
-                overwrite: "auto"// 防止动画冲突
+                overwrite: "auto"
             });
-        });
-
-        btn.addEventListener("click", ()=>{
-            gsap.to(".mouse", {
-                duration: 0.5,
-                width: original.width,
-                height: original.height,
-                borderRadius: original.borderRadius,
-                ease: "back.out(3)",
-                overwrite: "auto"// 防止动画冲突
-            });
-        
-            setTimeout(() => {
-                const isHovering = btn.matches(":hover");
-                if (!isHovering) {
-                    gsap.to(".mouse", {
-                        duration: 1,
-                        width: original.width,
-                        height: original.height,
-                        borderRadius: original.borderRadius,
-                        ease: "back.out(5)",
-                        overwrite: "auto"// 防止动画冲突
-                    });
-                } else {
-                    gsap.to(".mouse", {
-                        duration: 1,
-                        height: `${height + 10}`,
-                        width:  `${width + 10}`,
-                        borderRadius: 30,
-                        ease: "back.out(5)",
-                        overwrite: "auto"// 防止动画冲突
-                    });
-                }
-            }, 300);
-        })
-    
-})
-
-
-window.addEventListener('mousemove', (e) => {
-  console.log(e.clientX, e.clientY);
+        }
+    }, 300);
+  });
 });
