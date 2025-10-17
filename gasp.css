@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: "Maple Mono NF Cn Light";
-    src: url(/Font/MapleMono-NF-CN-LightItalic_1.ttf);
+    src: url(MapleMono-NF-CN-LightItalic_1.ttf);
 }
 
 body{
@@ -157,5 +157,6 @@ body{
   border-left: none;
   border-top: none;
 }
+
 
 
